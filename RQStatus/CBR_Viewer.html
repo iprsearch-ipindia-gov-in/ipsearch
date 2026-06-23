@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CBR Viewer</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            background: #f2f2f2;
+            text-align: center;
+        }
+
+        header {
+            background: #1a237e;
+            color: white;
+            padding: 15px;
+        }
+
+        #info {
+            padding: 10px;
+            font-size: 18px;
+        }
+
+        iframe {
+            width: 90%;
+            height: 600px;
+            border: 2px solid #333;
+            margin-top: 10px;
+            background: white;
+        }
+
+        .error {
+            color: red;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>CBR Viewer - Patent System</h2>
+</header>
+
+<div id="info"></div>
+
+<iframe id="pdfFrame"></iframe>
+
+<div id="error" class="error"></div>
+
+<script>
+    // Read URL parameters
+    const params = new URLSearchParams(window.location.search);
+
+    const docket = params.get("DocketNo");
+    const date = params.get("Date");
+    const ipo = params.get("Ipo");
+
+    document.getElementById("info").innerHTML =
+        "DocketNo: " + docket + "<br>" +
+        "Date: " + date + "<br>" +
+        "IPO: " + ipo;
+
+    // MAP DocketNo → PDF file
+    const pdfMap = {
+        "NzI2NTc=": "../patent.pdf"
+        // add more like:
+        // "ABC123": "../patent2.pdf"
+    };
+
+    // Get correct PDF
+    const pdfFile = pdfMap[docket];
+
+    if (pdfFile) {
+        document.getElementById("pdfFrame").src = pdfFile;
+    } else {
+        document.getElementById("error").innerText = "No Patent Found for this DocketNo";
+    }
+</script>
+
+</body>
+</html>
